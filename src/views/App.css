@@ -1,0 +1,10 @@
+.condition > div {
+    display: grid;
+    grid-template-columns: 1fr min-content;
+    align-items: center;
+    margin-bottom: 1em;
+}
+
+.allocator {
+    border: 1px solid;
+}
