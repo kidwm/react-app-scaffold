@@ -1,0 +1,52 @@
+.container {
+    font-size: 16px;
+    display: inline-flex;
+    align-items: center;
+}
+
+.container input,
+.container button {
+    font: inherit;
+    box-sizing: border-box;
+    width: 48px;
+    height: 48px;
+    border-radius: 5%;
+}
+
+.container input {
+    margin: 0 8px;
+    padding: 0;
+    border: 0;
+    text-align: center;
+    appearance: textfield;
+    border-style: outset;
+    border: 1px solid #ccc;
+}
+
+.container input:disabled {
+    cursor: not-allowed;
+    background-color: #eee;
+}
+
+.container input::-webkit-inner-spin-button {
+    display: none;
+}
+
+.container button {
+    color: skyblue;
+    background-color: transparent;
+    border: 1px solid;
+}
+
+.container button:first-of-type {
+    order: -1;
+}
+
+.container button:active {
+    transform: translateY(1px);
+}
+
+.container button:disabled {
+    color: #ccc;
+    cursor: not-allowed;
+}
