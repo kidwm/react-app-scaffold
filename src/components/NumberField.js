@@ -1,6 +1,7 @@
 import { useRef, useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
+import Icon from 'components/Icon';
 import { useToggle } from 'utils/state';
 
 import styles from './NumberField.css';
@@ -111,10 +112,10 @@ const NumberField = ({
                 onChange={handleChange}
             />
             <SpinButton disabled={disabled || currentValue <= min} spin={decrease}>
-                -
+                <Icon name="remove" />
             </SpinButton>
             <SpinButton disabled={disabled || currentValue >= max} spin={increase}>
-                +
+                <Icon name="add" />
             </SpinButton>
         </div>
     )
