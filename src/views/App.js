@@ -1,6 +1,6 @@
 import { useState, useCallback } from "react";
 
-import CustomInputNumber from "components/CustomInputNumber";
+import NumberField from "components/NumberField";
 import RoomAllocation from "views/RoomAllocation";
 
 import styles from './App.css';
@@ -26,7 +26,7 @@ const App = () => {
             <article className={styles.condition}>
                 <div>
                     人數
-                    <CustomInputNumber
+                    <NumberField
                         min={1}
                         value={peopleCount}
                         onChange={updatePeopleCount}
@@ -34,7 +34,7 @@ const App = () => {
                 </div>
                 <div>
                     房數
-                    <CustomInputNumber
+                    <NumberField
                         min={1}
                         value={roomCount}
                         onChange={updateRoomCount}

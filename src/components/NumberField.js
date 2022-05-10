@@ -1,8 +1,9 @@
-import { useRef, useCallback, useState, useEffect } from 'react';
+import { useRef, useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-import styles from './CustomInputNumber.css';
+import { useToggle } from 'utils/state';
 
+import styles from './NumberField.css';
 
 const SpinButton = ({
     disabled,
@@ -50,24 +51,20 @@ SpinButton.propTypes = {
     children: PropTypes.node,
 }
 
-const CustomInputNumber = ({
+const NumberField = ({
     className,
-    name,
-    min,
-    max,
-    step = 1,
-    value,
-    defaultValue,
-    disabled,
-    required,
-    readOnly,
-    onChange,
-    onBlur,
+    name, placeholder,
+    min, max, step = 1,
+    value, defaultValue,
+    disabled, required, readOnly,
+    onChange, onBlur,
 }) => {
     const inputRef = useRef();
-    const [ , forceUpdate ] = useState();
+    // update current value to disable spin button when reach the limit
+    const [ , forceUpdate ] = useToggle(false);
 
     const handleChange = event => {
+        forceUpdate();
         if (typeof onChange === 'function') {
             onChange(event);
         }
@@ -79,24 +76,21 @@ const CustomInputNumber = ({
         }
     }
 
-    const dispatchSpin = action => {
+    const spinStep = useCallback(direction => {
         let value = inputRef.current.value;
-        action();
+        inputRef.current[direction === 'up' ? 'stepUp' : 'stepDown']();
         if (value !== inputRef.current.value) {
             inputRef.current.dispatchEvent(new Event('input', { bubbles: true }));
-            forceUpdate(state => !state); // update current value to disable spin button when reach the limit
         }
-    }
-
-    const decrease = useCallback(() => {
-        dispatchSpin(() => inputRef.current.stepDown());
     }, []);
 
-    const increase = useCallback(() => {
-        dispatchSpin(() => inputRef.current.stepUp());
-    }, []);
+    const decrease = useCallback(() => spinStep('down'), [spinStep]);
 
-    const currentValue = value ?? parseInt(inputRef.current?.value, 10);
+    const increase = useCallback(() => spinStep('up'), [spinStep]);
+
+    useEffect(() => { forceUpdate() }, [forceUpdate]) // disable button with defaultValue
+
+    const currentValue = parseInt(inputRef.current?.value, 10);
 
     return (
         <div className={[styles.container, className].filter(Boolean).join(' ')}>
@@ -108,6 +102,7 @@ const CustomInputNumber = ({
                 max={max}
                 value={value}
                 defaultValue={defaultValue}
+                placeholder={placeholder}
                 step={step}
                 disabled={disabled}
                 required={required}
@@ -115,17 +110,17 @@ const CustomInputNumber = ({
                 onBlur={handleBlur}
                 onChange={handleChange}
             />
-            <SpinButton disabled={disabled || currentValue === min} spin={decrease}>
+            <SpinButton disabled={disabled || currentValue <= min} spin={decrease}>
                 -
             </SpinButton>
-            <SpinButton disabled={disabled || currentValue === max} spin={increase}>
+            <SpinButton disabled={disabled || currentValue >= max} spin={increase}>
                 +
             </SpinButton>
         </div>
     )
 }
 
-CustomInputNumber.propTypes = {
+NumberField.propTypes = {
     className: PropTypes.string,
     name: PropTypes.string,
     min: PropTypes.number,
@@ -133,6 +128,7 @@ CustomInputNumber.propTypes = {
     step: PropTypes.number,
     value: PropTypes.number,
     defaultValue: PropTypes.number,
+    placeholder: PropTypes.string,
     disabled: PropTypes.bool,
     required: PropTypes.bool,
     readOnly: PropTypes.bool,
@@ -140,4 +136,4 @@ CustomInputNumber.propTypes = {
     onBlur: PropTypes.func,
 }
 
-export default CustomInputNumber;
+export default NumberField;

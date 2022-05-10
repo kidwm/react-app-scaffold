@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
-import CustomInputNumber from 'components/CustomInputNumber';
+import NumberField from 'components/NumberField';
 
 import styles from './RoomAllocation.css';
 
@@ -37,7 +37,7 @@ const Room = ({
                     大人
                     <span className={styles.age}>年齡 20+</span>
                 </div>
-                <CustomInputNumber
+                <NumberField
                     name="adult"
                     value={adult}
                     min={1}
@@ -46,7 +46,7 @@ const Room = ({
             </label>
             <label>
                 小孩
-                <CustomInputNumber
+                <NumberField
                     name="child"
                     value={child}
                     min={0}
